@@ -1,5 +1,5 @@
 {
-    "name": "Recode/dhtmlx-bundle",
+    "name": "recode/dhtmlx-bundle",
     "description": "Update bundle from jsh11/dhtmlx-bundle for symfony4 integration wid-th dhtmlx-gantt",
     "type": "symfony-bundle",
     "authors": [
