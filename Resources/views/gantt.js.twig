@@ -1,0 +1,83 @@
+gantt.config.date_grid = "{{ gantt.config.date_grid }}";
+gantt.config.step = {{ gantt.config.step }};
+gantt.config.scale_unit = "{{ gantt.config.scale_unit }}";
+
+
+
+gantt.showLightbox = function (id) {
+    let task = gantt.getTask(id),
+        server = task.server !== undefined,
+        path,
+        title,
+        buttons = {};
+
+    if (server === false) {
+        path = Routing.generate("{{ gantt.ajax.route_new }}");
+        title = 'New Task';
+    } else {
+        path = Routing.generate("{{ gantt.ajax.route_edit }}", {id: id});
+        title = 'Edit Task';
+
+        buttons.deleteAction = {
+            btnClass: 'btn-red',
+            text: 'Elimine',
+            action: function () {
+                $.get(Routing.generate("{{ gantt.ajax.route_delete }}", {id: id}), function () {
+                    reload();
+                });
+            }
+        }
+    }
+
+    buttons.cancelAction = {
+        text: 'Cancel',
+        action: function () {
+            reload();
+        }
+    };
+
+    buttons.submitAction = {
+        text: 'Accept',
+        btnClass: 'btn-blue',
+        action: function (event) {
+            let form = $(dialog.$content).find('form');
+
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: form.serialize(),
+                success: function (response) {
+                    reload();
+                }
+            });
+        }
+    };
+
+    let dialog = $.confirm({
+        title: title,
+        boxWidth: '50%',
+        useBootstrap: false,
+        content: 'url:' + path,
+        buttons: buttons,
+        onContentReady: function () {
+            let jc = this;
+            this.$content.find('form').on('submit', function (e) {
+                e.preventDefault();
+                jc.$$formSubmit.trigger('click');
+            });
+        }
+    });
+}
+
+
+
+gantt.init("{{ gantt.getName() }}");
+let dpRoute = Routing.generate("{{ gantt.ajax.route_list }}");
+gantt.load(dpRoute, "json");
+let dp = new gantt.dataProcessor(dpRoute);
+dp.init(gantt);
+
+function reload() {
+    gantt.clearAll();
+    gantt.load(Routing.generate("{{ gantt.ajax.route_list }}", "json"));
+}

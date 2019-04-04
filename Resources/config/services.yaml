@@ -1,0 +1,10 @@
+services:
+    recode.dhtmlx.gantt_factory:
+        class: Recode\DhtmlxBundle\Factory\GanttFactory
+        arguments: ["@doctrine.orm.entity_manager"]
+
+    recode.dhtmlx.twig_extension:
+        class: Recode\DhtmlxBundle\Twig\DhtmlxExtension
+        arguments: ["@twig", "@form.factory"]
+        tags:
+            - { name: twig.extension }
