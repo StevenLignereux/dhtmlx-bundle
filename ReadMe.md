@@ -3,7 +3,7 @@
  Based on [jsh11](https://github.com/jsh11/dhtmlx-bundle/blob/master/Resources/doc/index.md)   work's it's just an adaptation for symfony 4 it's work like it. 
  
  
- #Installation
+ # Installation
     composer require recode/dhtmlx-bundle
  
  ### Use it
